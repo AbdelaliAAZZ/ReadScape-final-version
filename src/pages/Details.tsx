@@ -22,7 +22,7 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 
-// Extended properties for type safety
+// Define the Review interface to match the Book type's Review interface
 interface Review {
   id: number;
   user: string;
@@ -33,6 +33,7 @@ interface Review {
   image?: string;
 }
 
+// Extended properties for type safety, using Omit to exclude the reviews property from Book
 interface DetailBook extends Omit<Book, 'reviews'> {
   bestSeller?: boolean;
   reviewCount?: number;
