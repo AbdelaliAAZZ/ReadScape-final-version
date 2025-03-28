@@ -12,7 +12,7 @@ import {
   RiEyeLine
 } from 'react-icons/ri';
 import { Link } from 'react-router-dom';
-import { Book, getBookById, getAllBooks, books, trendingBooks } from '../data/books';
+import { Book, getBookById, books, trendingBooks } from '../data/books';
 import { useAlert } from '../App';
 import { useState, useEffect } from 'react';
 import { AnimatePresence } from 'framer-motion';
@@ -23,6 +23,16 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 
 // Extended properties for type safety
+interface Review {
+  id?: number;
+  user?: string;
+  name: string;
+  rating: number;
+  comment: string;
+  date?: string;
+  image?: string;
+}
+
 interface DetailBook extends Book {
   bestSeller?: boolean;
   reviewCount?: number;
@@ -30,13 +40,7 @@ interface DetailBook extends Book {
   language?: string;
   isbn?: string;
   highlights?: string[];
-  reviews?: {
-    name: string;
-    rating: number;
-    comment: string;
-    date?: string;
-    image?: string;
-  }[];
+  reviews?: Review[];
 }
 
 const Details = () => {
