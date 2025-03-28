@@ -24,8 +24,8 @@ import 'swiper/css/pagination';
 
 // Extended properties for type safety
 interface Review {
-  id?: number;
-  user?: string;
+  id: number;
+  user: string;
   name: string;
   rating: number;
   comment: string;
@@ -33,7 +33,7 @@ interface Review {
   image?: string;
 }
 
-interface DetailBook extends Book {
+interface DetailBook extends Omit<Book, 'reviews'> {
   bestSeller?: boolean;
   reviewCount?: number;
   pages?: string;
@@ -72,7 +72,7 @@ const Details = () => {
 
       // Check if book is in favorites
       const favorites = JSON.parse(localStorage.getItem("favorites") || "[]");
-      const isLiked = favorites.some((favBook: any) => favBook.id === parseInt(id));
+      const isLiked = favorites.some((favBook: Book) => favBook.id === parseInt(id));
       setLiked(isLiked);
       
       setLoading(false);
@@ -96,7 +96,7 @@ const Details = () => {
     if (!book) return;
     
     const cart = JSON.parse(localStorage.getItem("cart") || "[]");
-    const existingItem = cart.find((item: any) => item.id === book.id);
+    const existingItem = cart.find((item: Book) => item.id === book.id);
     
     if (existingItem) {
       existingItem.quantity += quantity;
@@ -114,7 +114,7 @@ const Details = () => {
     
     const favorites = JSON.parse(localStorage.getItem("favorites") || "[]");
     if (liked) {
-      const updatedFavorites = favorites.filter((favBook: any) => favBook.id !== book.id);
+      const updatedFavorites = favorites.filter((favBook: Book) => favBook.id !== book.id);
       localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
       showAlert("Removed from favorites", "success");
     } else {
@@ -310,6 +310,7 @@ const Details = () => {
                       <button
                         onClick={decrementQuantity}
                         disabled={quantity <= 1}
+                        aria-label="Decrease quantity"
                         className={`p-2 ${
                           quantity <= 1
                             ? "text-gray-400 cursor-not-allowed"
@@ -323,6 +324,7 @@ const Details = () => {
                       </span>
                       <button
                         onClick={incrementQuantity}
+                        aria-label="Increase quantity"
                         className="p-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
                       >
                         <RiAddLine />
